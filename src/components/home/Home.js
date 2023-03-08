@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import Fade from "react-reveal/Fade";
 import { Bounce } from "react-reveal";
@@ -11,6 +11,7 @@ import config from "../../config";
 import profile from "../../images/profile-bgdark.png";
 import linkedinLogo from "../../images/social/linkedin.png";
 import githubLogo from "../../images/social/github.png";
+import mailLogo from "../../images/social/mail.png";
 import cvLogo from "../../images/social/curriculum-vitae.png";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
@@ -20,13 +21,21 @@ const Home = () => {
     console.log(engine);
     await loadFull(engine);
   }, []);
+  const [conf, setConf] = useState(config.particles);
+  React.useEffect(() => {
+    let tmp = config.particles;
+    const amount = Math.floor(window.innerWidth / 40);
+    tmp.particles.number = { value: amount }
+    console.log("🚀 ~ file: Home.js ~ line 30 ~ handleResize ~ amount", amount)
+    setConf(tmp)
+  }, [])
   const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <div className="home-wrapper">
       <div className="home">
         <Particles
           className="particles"
-          params={config.particles}
+          params={conf}
           init={particlesInit}
         />
         <div className={`greeting${!imageLoaded ? " hide" : ""}`}>
@@ -38,7 +47,7 @@ const Home = () => {
               onLoad={() => setImageLoaded(true)}
             />
             <h1 className="greeting-text">
-              GH test . Hi, I'm <span className="name">Marco Bertolino</span>.{" "}
+              Hi, I'm <span className="name">Marco Bertolino</span>.{" "}
               <span className="wave-emoji" role="img" aria-label="waving hand">
                 👋
               </span>
@@ -66,6 +75,7 @@ const Home = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                marginBottom: "10vh"
               }}
             >
               <Bounce cascade>
@@ -94,6 +104,20 @@ const Home = () => {
                     <img
                       className="logoImage"
                       src={githubLogo}
+                      alt="Github Logo"
+                      width="50px"
+                    />
+                  </a>
+                </div>
+              </Bounce>
+              <Bounce cascade>
+                <div className="links">
+                  <a
+                    href="mailto:marcobertolino.developer@gmail.com"
+                  >
+                    <img
+                      className="logoImage"
+                      src={mailLogo}
                       alt="Github Logo"
                       width="50px"
                     />
